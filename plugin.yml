@@ -1,0 +1,6 @@
+name: Maunchants
+author: Tulir293
+main: net.maunium.bukkit.Maunchants.Maunchants
+website: http://maunium.net
+version: 0.1
+depend: [Maussentials]
