@@ -1,6 +1,5 @@
-package net.maunium.bukkit.Maunchants.Enchants;
+package net.maunium.bukkit.Maunchants;
 
-import net.maunium.bukkit.Maunchants.Maunchants;
 
 public interface MauEnchant {
 	public void load(Maunchants plugin);
