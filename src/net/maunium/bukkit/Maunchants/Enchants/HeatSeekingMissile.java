@@ -5,7 +5,6 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.util.Vector;
@@ -16,25 +15,10 @@ import net.maunium.bukkit.Maunchants.Maunchants;
 public class HeatSeekingMissile implements MauEnchant, Listener {
 	public static final String MISSILE_META = "MaunchantsHeatSeekingMissile";
 	private Maunchants plugin;
-	private boolean loaded;
 	
-	@Override
-	public void load(Maunchants plugin) {
+	public HeatSeekingMissile(Maunchants plugin) {
 		this.plugin = plugin;
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
-		loaded = true;
-	}
-	
-	@Override
-	public void unload() {
-		HandlerList.unregisterAll(this);
-		plugin = null;
-		loaded = false;
-	}
-	
-	@Override
-	public boolean isLoaded() {
-		return loaded;
 	}
 	
 	@Override

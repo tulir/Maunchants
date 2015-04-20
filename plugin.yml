@@ -4,3 +4,8 @@ main: net.maunium.bukkit.Maunchants.Maunchants
 website: http://maunium.net
 version: 0.1
 depend: [Maussentials]
+commands:
+  maunchant:
+    description: Enchant an item with a Maunchantemnt.
+    aliases: [mauenchant, maunch, mauench]
+    permission: maunchants.enchant
