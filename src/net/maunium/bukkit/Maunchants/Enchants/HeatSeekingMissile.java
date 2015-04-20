@@ -1,5 +1,8 @@
 package net.maunium.bukkit.Maunchants.Enchants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -7,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import net.maunium.bukkit.Maunchants.MauEnchant;
@@ -22,16 +27,55 @@ public class HeatSeekingMissile implements MauEnchant, Listener {
 	}
 	
 	@Override
-	public String getDisplayName() {
-		return plugin.translate("enchant.heatmissile.itemname");
+	public String getLoreLine() {
+		return plugin.translate("enchant.loreline.heatmissile");
+	}
+	
+	@Override
+	public void apply(Player p) {
+		if (p.getItemInHand().getType().equals(Material.BOW)) {
+			ItemStack is = p.getItemInHand();
+			ItemMeta im = is.getItemMeta();
+			List<String> lore;
+			if (im.hasLore()) lore = im.getLore();
+			else lore = new ArrayList<String>();
+			
+			if (!lore.contains(getLoreLine())) {
+				lore.add(getLoreLine());
+				p.sendMessage(plugin.stag + plugin.translate("enchant.applied.heatmissile"));
+				im.setLore(lore);
+				is.setItemMeta(im);
+			} else p.sendMessage(plugin.errtag + plugin.translate("enchant.error.alreadyin"));
+		} else p.sendMessage(plugin.errtag + plugin.translate("enchant.error.nobowfound"));
+	}
+	
+	@Override
+	public void remove(Player p) {
+		if (p.getItemInHand().getType().equals(Material.BOW)) {
+			ItemStack is = p.getItemInHand();
+			ItemMeta im = is.getItemMeta();
+			List<String> lore;
+			if (im.hasLore()) lore = im.getLore();
+			else {
+				p.sendMessage(plugin.errtag + plugin.translate("enchant.error.notin"));
+				return;
+			}
+			
+			if (lore.contains(getLoreLine())) {
+				lore.remove(getLoreLine());
+				p.sendMessage(plugin.stag + plugin.translate("enchant.removed.heatmissile"));
+				im.setLore(lore);
+				is.setItemMeta(im);
+			} else p.sendMessage(plugin.errtag + plugin.translate("enchant.error.notin"));
+		} else p.sendMessage(plugin.errtag + plugin.translate("enchant.error.nobowfound"));
 	}
 	
 	@EventHandler
 	public void onProjectileShoot(ProjectileLaunchEvent evt) {
 		if (evt.getEntity().getShooter() instanceof Player && evt.getEntity() instanceof Arrow) {
 			Player p = (Player) evt.getEntity().getShooter();
-			if (p.getItemInHand().getType().equals(Material.BOW) && p.getItemInHand().getItemMeta().hasDisplayName()
-					&& p.getItemInHand().getItemMeta().getDisplayName().equals(getName())) {
+			if (p.getItemInHand().getType().equals(Material.BOW) && p.getItemInHand().getItemMeta().hasLore()
+					&& p.getItemInHand().getItemMeta().getLore().contains(getLoreLine())) {
 				new SeekRunnable((Arrow) evt.getEntity(), 10).start();
 			}
 		}
