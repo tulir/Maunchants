@@ -28,4 +28,8 @@ public class Maunchants extends JavaPlugin {
 		int et = (int) (System.currentTimeMillis() - st);
 		getLogger().info("Maunchants v" + getDescription().getVersion() + " by Tulir293 disabled in " + et + "ms.");
 	}
+	
+	public String translate(String node, String... arguments) {
+		return null;
+	}
 }
